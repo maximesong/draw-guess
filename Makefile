@@ -1,8 +1,11 @@
 build:
 	GOOS=linux go build
 
+run:
+	gin
+
 docker-build: build
 	docker build -t draw-guess .
 
-run:
-	docker run --rm -p 3000:3000 draw-guess
+docker-run:
+	docker run --rm -p 8080:8080 draw-guess

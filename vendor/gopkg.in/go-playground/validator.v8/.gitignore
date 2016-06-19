@@ -22,5 +22,8 @@ _testmain.go
 *.exe
 *.test
 *.prof
-draw-guess
-gin-bin
+*.test
+*.out
+*.txt
+cover.html
+README.html
