@@ -22,5 +22,9 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
 draw-guess
 gin-bin
+
+bower_components/
+node_modules/
