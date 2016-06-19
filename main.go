@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"gopkg.in/mgo.v2"
 
@@ -40,9 +41,16 @@ func main() {
 		})
 	})
 	r.GET("/chanel", serveWs)
-	_, err := mgo.Dial("mongodb://localhost:27017")
+
+	mongoHost := os.Getenv("MONGO_HOST")
+	if mongoHost == "" {
+		mongoHost = "mongodb://localhost:27017"
+	}
+	log.Println("mongoHost", mongoHost)
+	_, err := mgo.Dial(mongoHost)
 	if err != nil {
-		log.Println("what ?", err)
+		log.Println("dial", err)
+		return
 	}
 	r.Run() // listen and server on 0.0.0.0:8080
 }
@@ -53,7 +61,12 @@ func serveWs(c *gin.Context) {
 		log.Println("ws", err)
 		return
 	}
-	session, err := mgo.Dial("mongodb://localhost:27017")
+	mongoHost := os.Getenv("MONGO_HOST")
+	if mongoHost == "" {
+		mongoHost = "mongodb://localhost:27017"
+	}
+	log.Println("mongoHost", mongoHost)
+	session, err := mgo.Dial(mongoHost)
 	if err != nil {
 		log.Println("dial", err)
 		return
@@ -69,17 +82,28 @@ func serveWs(c *gin.Context) {
 		}
 		if message.Action == "clear" {
 			coll.RemoveAll(make(map[string]interface{}))
-			return
+			continue
+		}
+		if message.Action == "get" {
+			var messages []DrawingMessage
+			coll.Find(map[string]interface{}{
+				"seq": map[string]interface{}{
+					"$gt": message.Seq,
+				},
+			}).Sort("seq").All(&messages)
+			log.Println("get", message.Seq)
+			log.Println(len(messages))
+			err = ws.WriteJSON(messages)
+			if err != nil {
+				log.Println("write:", err)
+				break
+			}
+			continue
 		}
 		log.Printf("recv: %s", message)
 		err = coll.Insert(message)
 		if err != nil {
 			log.Println("insert", err)
-			break
-		}
-		err = ws.WriteJSON(message)
-		if err != nil {
-			log.Println("write:", err)
 			break
 		}
 	}
