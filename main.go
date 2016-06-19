@@ -82,6 +82,11 @@ func serveWs(c *gin.Context) {
 		}
 		if message.Action == "clear" {
 			coll.RemoveAll(make(map[string]interface{}))
+			err = coll.Insert(message)
+			if err != nil {
+				log.Println("insert clear", err)
+				break
+			}
 			continue
 		}
 		if message.Action == "get" {

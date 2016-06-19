@@ -8,6 +8,14 @@ function touchStart() {
   console.log("start");
 }
 
+function touchMove() {
+  console.log("move");
+}
+
+function touchStop() {
+  console.log("stop");
+}
+
 function mouseDown(event, e2) {
   console.log("mouse down");
   console.log(strokes);
@@ -93,6 +101,9 @@ window.onload = function() {
   canvas.addEventListener("mousedown", mouseDown, false);
   canvas.addEventListener("mouseup", mouseUp, false);
   canvas.addEventListener("mousemove", mouseMove, false);
+  canvas.addEventListener("touchmove", touchMove, false);
+  canvas.addEventListener("touchstart", touchStart, false);
+  canvas.addEventListener("touchstop", touchStop, false);
   var url = "ws://" + window.location.host + "/chanel";
   console.log(url);
   ws = new WebSocket(url);
@@ -119,6 +130,13 @@ window.onload = function() {
           draw(s.from, s.to);
         }
         seq = m.seq;
+      }
+      if (m.action == "clear" && m.seq > seq) {
+        var canvas = document.getElementById("painting");
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        seq = 0;
+        strokes = [];
       }
     }
   };
