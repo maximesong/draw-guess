@@ -1,0 +1,17 @@
+{
+	"ImportPath": "draw-guess",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v74",
+	"Deps": [
+		{
+			"ImportPath": "github.com/codegangsta/inject",
+			"Comment": "v1.0-rc1-10-g33e0aa1",
+			"Rev": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504"
+		},
+		{
+			"ImportPath": "github.com/go-martini/martini",
+			"Comment": "v1.0-185-gc257c41",
+			"Rev": "c257c412d547ac70fcaf5596c1a50a7cb832c1fc"
+		}
+	]
+}
