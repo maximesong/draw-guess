@@ -1,3 +1,14 @@
 #painting {
+  z-index: 1;
   border: 1px solid;
+}
+
+#preview {
+  z-index: 0;
+}
+
+.painting-area {
+  margin: auto;
+  width: 400px;
+  display: block;
 }

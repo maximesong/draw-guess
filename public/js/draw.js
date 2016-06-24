@@ -3,7 +3,8 @@ var isMouseDown = false;
 var strokes = [];
 
 var ws;
-var seq = 0;
+var latestUUID = "";
+
 function touchStart() {
   console.log("start");
 }
@@ -16,13 +17,11 @@ function touchStop() {
   console.log("stop");
 }
 
-function mouseDown(event, e2) {
+function mouseDown(event) {
   console.log("mouse down");
   console.log(strokes);
   console.log(event);
-  console.log(e2);
   isMouseDown = true;
-  console.log(mouseDown);
 }
 
 function mouseMove(event) {
@@ -40,30 +39,25 @@ function mouseMove(event) {
       to: to,
     });
   }
-  //console.log(isMouseDown);
-  //console.log(event);
 }
 
-function mouseUp(event, e2) {
+function mouseUp(event) {
   var canvas = document.getElementById("painting");
-  var pos = getPos(canvas, event.clientX, event.clientY);
-  console.log(pos);
-  console.log(event);
   isMouseDown = false;
-  seq += 1;
   ws.send(JSON.stringify({
-    seq: seq,
+    baseUUID: latestUUID,
     action: "draw",
     strokes: strokes,
   }));
+  console.log(strokes);
   strokes = [];
 }
 
 function getPos(canvas, x, y) {
   var rect = canvas.getBoundingClientRect();
   return {
-    x: x - rect.left,
-    y: y - rect.top,
+    x: Math.floor(x - rect.left),
+    y: Math.floor(y - rect.top),
   };
 }
 
@@ -113,41 +107,53 @@ window.onload = function() {
   button.addEventListener("click", clear, false);
   ws.onopen = function() {
     ws.send(JSON.stringify({
-      action: "get",
-      seq: seq,
+      action: "fetch",
+      baseUUID: latestUUID,
     }));
     // do nothing
   };
   ws.onmessage = function(message) {
-    var messages = JSON.parse(message.data);
-    for (var i in messages) {
-      var m = messages[i];
-      console.log(m);
-      if (m.action == "draw" && m.seq > seq) {
-        for (var j in m.strokes) {
-          var s = m.strokes[j];
-          console.log(s);
-          draw(s.from, s.to);
-        }
-        seq = m.seq;
+    console.log(message.data)
+    var m = JSON.parse(message.data);
+    console.log(m);
+    console.log(typeof m);
+    console.log(m.action)
+    console.log(m.uuid)
+    if (m.action == "draw") {
+      console.log("draw");
+      for (var j in m.strokes) {
+        var s = m.strokes[j];
+        console.log(s);
+        draw(s.from, s.to);
       }
-      if (m.action == "clear" && m.seq > seq) {
-        var canvas = document.getElementById("painting");
-        var context = canvas.getContext('2d');
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        seq = 0;
-        strokes = [];
-      }
+      seq = m.seq;
+    }
+    if (m.action == "clear") {
+      var canvas = document.getElementById("painting");
+      var context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      seq = 0;
+      strokes = [];
     }
   };
  window.setInterval(function() {
    console.log("get interval");
    ws.send(JSON.stringify({
-     action: "get",
-     seq: seq,
+     action: "fetch",
+     baseUUID: latestUUID,
    }));
  }, 1000);
 };
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
 
 
 console.log("hello");

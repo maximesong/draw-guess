@@ -4,6 +4,16 @@
 	"GodepVersion": "v74",
 	"Deps": [
 		{
+			"ImportPath": "github.com/garyburd/redigo/internal",
+			"Comment": "v1.0.0-1-gb8dc900",
+			"Rev": "b8dc90050f24c1a73a52f107f3f575be67b21b7c"
+		},
+		{
+			"ImportPath": "github.com/garyburd/redigo/redis",
+			"Comment": "v1.0.0-1-gb8dc900",
+			"Rev": "b8dc90050f24c1a73a52f107f3f575be67b21b7c"
+		},
+		{
 			"ImportPath": "github.com/gin-gonic/gin",
 			"Comment": "v1.0rc1-268-gf931d1e",
 			"Rev": "f931d1ea80ae95a6fc739213cdd9399bd2967fb6"
@@ -21,6 +31,16 @@
 		{
 			"ImportPath": "github.com/golang/protobuf/proto",
 			"Rev": "0c1f6d65b5a189c2250d10e71a5506f06f9fa0a0"
+		},
+		{
+			"ImportPath": "github.com/google/uuid",
+			"Comment": "v.1-19-gf3f4b54",
+			"Rev": "f3f4b54b2fabcf1f11dcc939025bb0c109b00ed8"
+		},
+		{
+			"ImportPath": "github.com/gorilla/websocket",
+			"Comment": "v1.0.0-12-ga687089",
+			"Rev": "a68708917c6a4f06314ab4e52493cc61359c9d42"
 		},
 		{
 			"ImportPath": "github.com/manucorporat/sse",
