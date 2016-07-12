@@ -88,6 +88,10 @@ function clear() {
 }
 
 window.onload = function() {
+  var pathFields = window.location.pathname.split("/");
+  var boardName = pathFields[pathFields.length - 1];
+  openBoard(boardName);
+  console.log(name);
   console.log("on load");
   var canvas = document.getElementById("painting");
   canvas.width  = 400;
@@ -98,7 +102,7 @@ window.onload = function() {
   canvas.addEventListener("touchmove", touchMove, false);
   canvas.addEventListener("touchstart", touchStart, false);
   canvas.addEventListener("touchstop", touchStop, false);
-  var url = "ws://" + window.location.host + "/chanel";
+  var url = "ws://" + window.location.host + "/chanel/" + boardName;
   console.log(url);
   ws = new WebSocket(url);
   console.log(ws);
@@ -113,12 +117,10 @@ window.onload = function() {
     // do nothing
   };
   ws.onmessage = function(message) {
-    console.log(message.data)
+    console.log(message.data);
     var m = JSON.parse(message.data);
     console.log(m);
-    console.log(typeof m);
-    console.log(m.action)
-    console.log(m.uuid)
+    console.log(m.uuid, m.action);
     if (m.action == "draw") {
       console.log("draw");
       for (var j in m.strokes) {
@@ -127,6 +129,7 @@ window.onload = function() {
         draw(s.from, s.to);
       }
       seq = m.seq;
+      latestUUID = m.uuid;
     }
     if (m.action == "clear") {
       var canvas = document.getElementById("painting");
@@ -134,6 +137,7 @@ window.onload = function() {
       context.clearRect(0, 0, canvas.width, canvas.height);
       seq = 0;
       strokes = [];
+      latestUUID = "";
     }
   };
  window.setInterval(function() {
@@ -153,6 +157,24 @@ function guid() {
   }
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
+}
+
+function openBoard(boardName) {
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+      var guest = JSON.parse(xmlHttp.responseText).hash;
+      console.log("guest room name:", guest);
+      var qrImage = document.getElementById("guess-qrcode");
+      qrImage.src = "/qrcode/" + guest;
+      var link = document.getElementById("guess-link");
+      console.log(link);
+      link.href="/guess/" + guest;
+      console.log(qrImage);
+    }
+  };
+  xmlHttp.open("POST", "/open/" + boardName, true); // true for asynchronous
+  xmlHttp.send(null);
 }
 
 

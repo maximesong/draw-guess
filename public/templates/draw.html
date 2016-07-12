@@ -3,23 +3,24 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>你画我猜</title>
+        <title>你画我猜-{{.name}}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="/css/main.css">
 
     </head>
     <body>
-        <script src="js/draw.js"></script>
+        <script src="/js/draw.js"></script>
+        <div id="guess-area">
+          <div id="guess-text">点击或扫码我猜</div>
+          <a id="guess-link" href="" target="_blank"><img id="guess-qrcode" src=""></img></a>
+        </div>
         <div class="painting-area">
           <canvas id="painting"></canvas>
-          <canvas id="preview"></canvas>
-        </div>
-        <div>
           <button id="clear">清除</button>
         </div>
     </body>

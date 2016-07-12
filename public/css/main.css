@@ -11,4 +11,21 @@
   margin: auto;
   width: 400px;
   display: block;
+  padding: 20px;
+}
+
+#clear {
+  margin: auto;
+  width: 400px;
+}
+
+#guess-area {
+  float: right;
+  padding: 20px;
+}
+
+#guess-text {
+  margin-bottom: 5px;
+  text-align: center;
+  width: 200;
 }

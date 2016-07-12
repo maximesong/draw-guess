@@ -1,5 +1,5 @@
-FROM alpine:3.3
+FROM alpine:3.4
 
-ADD draw-guess draw-guess
-ADD public public
+COPY draw-guess draw-guess
+COPY public public
 CMD ["./draw-guess"]

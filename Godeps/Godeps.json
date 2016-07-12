@@ -4,6 +4,22 @@
 	"GodepVersion": "v74",
 	"Deps": [
 		{
+			"ImportPath": "github.com/atrox/haikunatorgo",
+			"Rev": "f199beef52c9305453d121ee6c4319bf79851c40"
+		},
+		{
+			"ImportPath": "github.com/boombuler/barcode",
+			"Rev": "d1c739eed5fe6b2198220f20403e60584ecffadb"
+		},
+		{
+			"ImportPath": "github.com/boombuler/barcode/qr",
+			"Rev": "d1c739eed5fe6b2198220f20403e60584ecffadb"
+		},
+		{
+			"ImportPath": "github.com/boombuler/barcode/utils",
+			"Rev": "d1c739eed5fe6b2198220f20403e60584ecffadb"
+		},
+		{
 			"ImportPath": "github.com/garyburd/redigo/internal",
 			"Comment": "v1.0.0-1-gb8dc900",
 			"Rev": "b8dc90050f24c1a73a52f107f3f575be67b21b7c"
