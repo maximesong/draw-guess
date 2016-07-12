@@ -59,7 +59,9 @@ func main() {
 
 	r.LoadHTMLGlob("./public/templates/*")
 	r.GET("/guess/:name", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "guess.html", gin.H{})
+		c.HTML(http.StatusOK, "guess.html", gin.H{
+			"name": c.Param("name"),
+		})
 	})
 	r.GET("/draw/:name", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "draw.html", gin.H{
